@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "378272187044",
+    "firebase_url": "https://buongiornissimo-einstein.firebaseio.com",
+    "project_id": "buongiornissimo-einstein",
+    "storage_bucket": "buongiornissimo-einstein.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:378272187044:android:888cc1c32a9ce88b",
+        "android_client_info": {
+          "package_name": "com.ivaskuu.buongiornissimo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "378272187044-qqp2f7hm7ksvm8j1jdk35oes7amk7jcq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ivaskuu.buongiornissimo",
+            "certificate_hash": "177a51bd38887f39f553049c1dc633812a315a35"
+          }
+        },
+        {
+          "client_id": "378272187044-pnk1p84dpdtbe5jiu3utk57v2a913rqs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOP9XSGdFnZhkGKs8w45pGNGuo7ZvCPbk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "378272187044-pnk1p84dpdtbe5jiu3utk57v2a913rqs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
