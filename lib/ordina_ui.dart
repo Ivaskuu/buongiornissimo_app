@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'custom_colors.dart';
-
+import 'main.dart';
 import 'ordina_list_ui.dart';
 
 class OrdinaUI extends StatefulWidget
@@ -60,7 +60,7 @@ class OrdinaUIState extends State<OrdinaUI>
               (
                 child: new InkWell
                 (
-                  onTap: () => null,
+                  onTap: () => _ordina(),
                   child: new Container
                   (
                     margin: new EdgeInsets.symmetric(vertical: 24.0),
@@ -117,5 +117,40 @@ class OrdinaUIState extends State<OrdinaUI>
         ),
       )
     );
+  }
+
+  void _ordina()
+  {
+    var ref = reference.push();
+    ref.set
+    ({
+      "nome": googleSignIn.currentUser.displayName,
+      "foto": googleSignIn.currentUser.photoUrl,
+      "classe": "5^C",
+      "aula": 24,
+      "completato": false,
+      "consegnatore": null,
+      "id": ref.key,
+      "num_oggetti": 3,
+      "oggetti": 
+      {
+        "Caffè espresso":
+        {
+          "prezzo": 0.30,
+          "macchinetta": 0
+        },
+        "Acqua naturale":
+        {
+          "prezzo": 0.35,
+          "macchinetta": 1
+        },
+        "Panino salame":
+        {
+          "prezzo": 1.35,
+          "macchinetta": 3
+        }
+      }
+    });
+    analytics.logEvent(name: "nuova_richiesta");
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'custom_colors.dart';
 
 import 'ordina_ui.dart';
+import 'miei_ordini_ui.dart';
 import 'consegna_ui.dart';
 import 'profilo_ui.dart';
 
@@ -50,6 +51,11 @@ class MainUIState extends State<MainUI>
           ),
           new BottomNavigationBarItem
           (
+            icon: new Icon(Icons.account_balance),
+            title: new Text("I miei ordini")
+          ),
+          new BottomNavigationBarItem
+          (
             icon: new Icon(Icons.shopping_cart),
             title: new Text("Consegna")
           ),
@@ -59,7 +65,8 @@ class MainUIState extends State<MainUI>
           switch(index)
           {
             case 0: setState(() => widget.body = new OrdinaUI()); break;
-            case 1: setState(() => widget.body = new ConsegnaUI()); break;
+            case 1: setState(() => widget.body = new MieiOrdiniUI()); break;
+            case 2: setState(() => widget.body = new ConsegnaUI()); break;
           }
 
           widget.currentIndex = index;
