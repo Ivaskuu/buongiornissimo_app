@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'colors.dart';
 
+import 'ordina_list_ui.dart';
+
 class OrdinaUI extends StatefulWidget
 {
   @override
@@ -31,7 +33,14 @@ class OrdinaUIState extends State<OrdinaUI>
               (
                 child: new InkWell
                 (
-                  onTap: () => null,
+                  onTap: () => Navigator.of(context).push(new MaterialPageRoute(builder: (_) => new OrdinaListUI()))/*.then(
+                  (Task task)
+                  {
+                    if( task != null )
+                    {
+                      addTask(task);
+                    }
+                  })*/,
                   child: new Container
                   (
                     margin: new EdgeInsets.symmetric(vertical: 24.0),
