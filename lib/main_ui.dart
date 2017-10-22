@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'colors.dart';
+import 'custom_colors.dart';
 
 import 'ordina_ui.dart';
 import 'consegna_ui.dart';
+import 'io_ui.dart';
 
 class MainUI extends StatefulWidget
 {
@@ -28,10 +29,10 @@ class MainUIState extends State<MainUI>
         title: new Text("Buongiornissimo", style: new TextStyle(color: Colors.white)),
         actions: <Widget>
         [
-          new CircleAvatar
+          new IconButton
           (
-            backgroundColor: Colors.white,
-            child: new Icon(Icons.account_circle, color: colorCaffe),
+            icon: new Icon(Icons.account_circle),
+            onPressed: () => Navigator.of(context).push(new MaterialPageRoute(builder: (_) => new IoUI()))
           )
         ]
       ),

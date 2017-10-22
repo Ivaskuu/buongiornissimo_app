@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'colors.dart';
+import 'custom_colors.dart';
 
 class ConsegnaUI extends StatefulWidget
 {
