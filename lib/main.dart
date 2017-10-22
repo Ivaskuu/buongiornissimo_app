@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
 import 'main_ui.dart';
+import 'dart:async';
+import 'global.dart' as global;
 
 void main()
 {
@@ -12,6 +16,8 @@ class MyApp extends StatelessWidget
   @override
   Widget build(BuildContext context)
   {
+    _ensureLoggedIn();
+
     return new MaterialApp
     (
       title: 'Buongiorinssimo',
@@ -29,5 +35,12 @@ class MyApp extends StatelessWidget
       ),
       home: new MainUI(),
     );
+  }
+
+  Future<Null> _ensureLoggedIn() async
+  {
+    GoogleSignInAccount user = global.googleSignIn.currentUser;
+    if (user == null) user = await global.googleSignIn.signInSilently(); // If already logged in
+    if (user == null) await global.googleSignIn.signIn(); // The first time ?
   }
 }

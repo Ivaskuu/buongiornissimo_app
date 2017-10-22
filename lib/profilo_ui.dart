@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'custom_colors.dart';
+import 'global.dart' as global;
 
 class ProfiloUI extends StatefulWidget
 {
@@ -43,16 +44,15 @@ class ProfiloUIState extends State<ProfiloUI>
                 (
                   children: <Widget>
                   [
-                    new CircleAvatar
+                    new CircleAvatar /* User image */
                     (
                       radius: 40.0,
-                      backgroundColor: colorCaffe,
-                      child: new Icon(Icons.account_circle, color: Colors.white, size: 60.0),
+                      backgroundImage: new NetworkImage(global.googleSignIn.currentUser.photoUrl)
                     ),
                     new Container
                     (
                       margin: new EdgeInsets.only(top: 16.0),
-                      child: new Text("Ivascu Adrian", style: Theme.of(context).textTheme.title.copyWith(color: Colors.black), textScaleFactor: 1.4),
+                      child: new Text(global.googleSignIn.currentUser.displayName, style: Theme.of(context).textTheme.title.copyWith(color: Colors.black), textScaleFactor: 1.4),
                     ),
                     new Text("52 punti onestà")
                   ],

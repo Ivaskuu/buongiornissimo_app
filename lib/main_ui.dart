@@ -3,7 +3,7 @@ import 'custom_colors.dart';
 
 import 'ordina_ui.dart';
 import 'consegna_ui.dart';
-import 'io_ui.dart';
+import 'profilo_ui.dart';
 
 class MainUI extends StatefulWidget
 {
@@ -32,7 +32,7 @@ class MainUIState extends State<MainUI>
           new IconButton
           (
             icon: new Icon(Icons.account_circle),
-            onPressed: () => Navigator.of(context).push(new MaterialPageRoute(builder: (_) => new IoUI()))
+            onPressed: () => Navigator.of(context).push(new MaterialPageRoute(builder: (_) => new ProfiloUI()))
           )
         ]
       ),
