@@ -7,6 +7,7 @@ import 'consegna_ui.dart';
 class MainUI extends StatefulWidget
 {
   Widget body = new OrdinaUI();
+  int currentIndex = 0;
 
   @override
   MainUIState createState() => new MainUIState();
@@ -38,6 +39,7 @@ class MainUIState extends State<MainUI>
       bottomNavigationBar: new BottomNavigationBar
       (
         fixedColor: colorCaffe,
+        currentIndex: widget.currentIndex,
         items: <BottomNavigationBarItem>
         [
           new BottomNavigationBarItem
@@ -58,6 +60,8 @@ class MainUIState extends State<MainUI>
             case 0: setState(() => widget.body = new OrdinaUI()); break;
             case 1: setState(() => widget.body = new ConsegnaUI()); break;
           }
+
+          widget.currentIndex = index;
         },
       )
     );

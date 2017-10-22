@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'colors.dart';
 
 class ConsegnaUI extends StatefulWidget
 {
@@ -13,6 +14,7 @@ class ConsegnaUIState extends State<ConsegnaUI>
   {
     return new Scaffold
     (
+      backgroundColor: colorCaffe,
       body: new Center
       (
         child: new Text("Consegna UI"),
