@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'colors.dart';
 
-Color caffeColor = new Color.fromRGBO(92, 75, 81, 1.0);
+import 'ordina_ui.dart';
+import 'consegna_ui.dart';
 
 class MainUI extends StatefulWidget
 {
+  Widget body = new OrdinaUI();
+
   @override
   MainUIState createState() => new MainUIState();
 }
@@ -17,7 +21,7 @@ class MainUIState extends State<MainUI>
     (
       appBar: new AppBar
       (
-        backgroundColor: caffeColor,
+        backgroundColor: colorCaffe,
         elevation: 0.0,
         leading: new Icon(Icons.local_cafe, color: Colors.white),
         title: new Text("Buongiornissimo", style: new TextStyle(color: Colors.white)),
@@ -26,15 +30,36 @@ class MainUIState extends State<MainUI>
           new CircleAvatar
           (
             backgroundColor: Colors.white,
-            child: new Icon(Icons.account_circle, color: caffeColor),
+            child: new Icon(Icons.account_circle, color: colorCaffe),
           )
         ]
       ),
-      backgroundColor: caffeColor,
-      body: new Center
+      body: widget.body,
+      bottomNavigationBar: new BottomNavigationBar
       (
-        child: new Text("Kaffee ?"),
-      ),
+        fixedColor: colorCaffe,
+        items: <BottomNavigationBarItem>
+        [
+          new BottomNavigationBarItem
+          (
+            icon: new Icon(Icons.store),
+            title: new Text("Ordina")
+          ),
+          new BottomNavigationBarItem
+          (
+            icon: new Icon(Icons.shopping_cart),
+            title: new Text("Consegna")
+          ),
+        ],
+        onTap: (int index)
+        {
+          switch(index)
+          {
+            case 0: setState(() => widget.body = new OrdinaUI()); break;
+            case 1: setState(() => widget.body = new ConsegnaUI()); break;
+          }
+        },
+      )
     );
   }
 }
