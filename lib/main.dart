@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'main_ui.dart';
 import 'dart:async';
-import 'global.dart' as global;
+
+final GoogleSignIn googleSignIn = new GoogleSignIn();
+final FirebaseAnalytics analytics = new FirebaseAnalytics();
+final FirebaseAuth auth = FirebaseAuth.instance;
 
 void main()
 {
@@ -12,7 +17,6 @@ void main()
 
 class MyApp extends StatelessWidget
 {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context)
   {
@@ -21,26 +25,29 @@ class MyApp extends StatelessWidget
     return new MaterialApp
     (
       title: 'Buongiorinssimo',
-      theme: new ThemeData
-      (
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or press Run > Flutter Hot Reload in IntelliJ). Notice that the
-        // counter didn't reset back to zero; the application is not restarted.
-        primarySwatch: Colors.blue,
-      ),
+      theme: new ThemeData(primarySwatch: Colors.blue),
       home: new MainUI(),
     );
   }
 
   Future<Null> _ensureLoggedIn() async
   {
-    GoogleSignInAccount user = global.googleSignIn.currentUser;
-    if (user == null) user = await global.googleSignIn.signInSilently(); // If already logged in
-    if (user == null) await global.googleSignIn.signIn(); // The first time ?
+    GoogleSignInAccount user = googleSignIn.currentUser;
+    if (user == null) user = await googleSignIn.signInSilently(); // If already logged in
+    if (user == null)
+    {
+      await googleSignIn.signIn(); // The first time ?
+      analytics.logLogin();
+    }
+
+    if(await auth.currentUser() == null)
+    {
+      GoogleSignInAuthentication credentials = await googleSignIn.currentUser.authentication;
+      await auth.signInWithGoogle
+      (
+        idToken: credentials.idToken,
+        accessToken: credentials.accessToken
+      );
+    }
   }
 }
