@@ -136,19 +136,40 @@ class OrdinaUIState extends State<OrdinaUI>
       {
         "Caffè espresso":
         {
+          "quantita": 1,
           "prezzo": 0.30,
           "macchinetta": 0
         },
         "Acqua naturale":
         {
+          "quantita": 2,
           "prezzo": 0.35,
           "macchinetta": 1
         },
         "Panino salame":
         {
+          "quantita": 1,
           "prezzo": 1.35,
           "macchinetta": 3
-        }
+        },
+        "Cordon bleu":
+        {
+          "quantita": 1,
+          "prezzo": 2.05,
+          "macchinetta": 3
+        },
+        "Acqua frizzante":
+        {
+          "quantita": 1,
+          "prezzo": 0.35,
+          "macchinetta": 1
+        },
+        "Cioccolata":
+        {
+          "quantita": 1,
+          "prezzo": 0.30,
+          "macchinetta": 0
+        },
       }
     });
     analytics.logEvent(name: "nuova_richiesta");
