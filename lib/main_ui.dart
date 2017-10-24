@@ -26,7 +26,7 @@ class MainUIState extends State<MainUI>
       (
         backgroundColor: colorCaffe,
         elevation: 0.0,
-        leading: new Icon(Icons.local_cafe, color: Colors.white),
+        //leading: new Icon(Icons.local_cafe, color: Colors.white),
         title: new Text("Buongiornissimo", style: new TextStyle(color: Colors.white)),
         actions: <Widget>
         [
