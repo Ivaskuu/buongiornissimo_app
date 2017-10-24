@@ -70,6 +70,7 @@ loadCarello() async
 
   try
   {
+    prefs.setStringList("carello", null);
     List<String> carelloStringa = prefs.getStringList("carello");
     carelloStringa.forEach((String oggetto) => carello.add(int.parse(oggetto)));
   }

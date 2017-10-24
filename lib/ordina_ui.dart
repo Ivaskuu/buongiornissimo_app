@@ -3,6 +3,7 @@ import 'custom_colors.dart';
 import 'main.dart';
 import 'oggetto.dart';
 import 'lista_oggetti.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OrdinaUI extends StatefulWidget
 {
@@ -144,22 +145,22 @@ class OrdinaUIState extends State<OrdinaUI> with SingleTickerProviderStateMixin
             title: new Text(_oggetto.nome),
             subtitle: new Text("${_oggetto.prezzo.toStringAsFixed(2)} €"),
             trailing: new Column
-            (
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>
-              [
-                new Text("125g"),
-                new Text("376 kcal")
-              ],
-            ),
+              (
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>
+                [
+                  new Text(_oggetto.peso == null ? "" : "${_oggetto.peso}g"),
+                  new Text(_oggetto.kcal == null ? "" : "${_oggetto.kcal} kcal"),
+                ],
+              )
           ),
           new Container
           (
             margin: new EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
             child: new RaisedButton
             (
-              onPressed: () => aggiungiAlCarello(ListaOggetti.oggetti.indexOf(_oggetto)),
+              onPressed: () => setState(() => aggiungiAlCarello(ListaOggetti.oggetti.indexOf(_oggetto))),
               child: new Text("AGGIUNGI AL CARELLO", style: new TextStyle(color: Colors.white)),
               color: colorCaffe,
             )
