@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'main_ui.dart';
+import 'oggetto.dart';
 import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -14,8 +16,13 @@ final DatabaseReference reference = FirebaseDatabase.instance.reference().child(
 
 void main()
 {
+  loadCarello();
   runApp(new MyApp());
 }
+
+List<int> carello = new List(); // int perchè metto dentro l'ID dell'oggetto (cioè la pos nella lista)
+// WARNING: è molto rischioso, se la lista viene aggiornata, però non ho voglia di fare altramente
+// forse nel futuro aggiungerò gli oggetti nel database e li farò scaricare
 
 class MyApp extends StatelessWidget
 {
@@ -52,4 +59,34 @@ class MyApp extends StatelessWidget
       );
     }
   }
+}
+
+/* ---------------- */
+/* Funzioni globali */
+/* ---------------- */
+loadCarello() async
+{
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  try
+  {
+    List<String> carelloStringa = prefs.getStringList("carello");
+    carelloStringa.forEach((String oggetto) => carello.add(int.parse(oggetto)));
+  }
+  catch (Exception) { /* E niente, bonasera */ }
+}
+
+salvaCarello() async
+{
+  List<String> carelloStringa = new List();
+  carello.forEach((int oggetto) => carelloStringa.add(oggetto.toString()));
+
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setStringList("carello", carelloStringa);
+}
+
+void aggiungiAlCarello(int idOggetto)
+{
+  carello.add(idOggetto);
+  salvaCarello(); // TODO: Non è molto ottimizzato
 }
