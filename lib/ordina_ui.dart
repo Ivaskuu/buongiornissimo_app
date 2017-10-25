@@ -3,6 +3,7 @@ import 'custom_colors.dart';
 import 'main.dart';
 import 'oggetto.dart';
 import 'lista_oggetti.dart';
+import 'checkout_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OrdinaUI extends StatefulWidget
@@ -65,7 +66,7 @@ class OrdinaUIState extends State<OrdinaUI> with SingleTickerProviderStateMixin
           [
             new FloatingActionButton
             (
-              onPressed: () => null,
+              onPressed: () => Navigator.of(context).push(new MaterialPageRoute(builder: (_) => new CheckoutUI())),
               child: new Icon(Icons.shopping_cart),
               backgroundColor: Colors.pinkAccent,
             ),
@@ -171,60 +172,4 @@ class OrdinaUIState extends State<OrdinaUI> with SingleTickerProviderStateMixin
   }
 
   //Navigator.of(context).push(new MaterialPageRoute(builder: (_) => new OrdinaListUI())).then((Task task){if( task != null ){addTask(task);}})
-
-  void _ordina()
-  {
-    var ref = reference.push();
-    ref.set
-    ({
-      "nome": googleSignIn.currentUser.displayName,
-      "foto": googleSignIn.currentUser.photoUrl,
-      "classe": "5^C",
-      "aula": 24,
-      "completato": false,
-      "consegnatore": null,
-      "id": ref.key,
-      "num_oggetti": 3,
-      "oggetti": 
-      {
-        "Caffè espresso":
-        {
-          "quantita": 1,
-          "prezzo": 0.30,
-          "macchinetta": 0
-        },
-        "Acqua naturale":
-        {
-          "quantita": 2,
-          "prezzo": 0.35,
-          "macchinetta": 1
-        },
-        "Panino salame":
-        {
-          "quantita": 1,
-          "prezzo": 1.35,
-          "macchinetta": 3
-        },
-        "Cordon bleu":
-        {
-          "quantita": 1,
-          "prezzo": 2.05,
-          "macchinetta": 3
-        },
-        "Acqua frizzante":
-        {
-          "quantita": 1,
-          "prezzo": 0.35,
-          "macchinetta": 1
-        },
-        "Cioccolata":
-        {
-          "quantita": 1,
-          "prezzo": 0.30,
-          "macchinetta": 0
-        },
-      }
-    });
-    analytics.logEvent(name: "nuova_richiesta");
-  }
 }
