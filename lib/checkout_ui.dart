@@ -6,12 +6,37 @@ import 'main.dart';
 
 class CheckoutUI extends StatefulWidget
 {
+  List<int> carelloOrdinato = carello;
+  List<int> occurences = new List();
+
   @override
   CheckoutUIState createState() => new CheckoutUIState();
 }
 
 class CheckoutUIState extends State<CheckoutUI>
 {
+  @override
+  void initState()
+  {
+    for (int i = 0; i < widget.carelloOrdinato.length; i++)
+    {
+      int count = 1;
+      for (int j = i + 1; j < widget.carelloOrdinato.length; j++)
+      {
+        if(widget.carelloOrdinato[i] == widget.carelloOrdinato[j])
+        {
+          count++;
+          widget.carelloOrdinato.removeAt(j);
+          j--;
+        }
+      }
+
+      widget.occurences.add(count);
+    }
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context)
   {
@@ -32,12 +57,42 @@ class CheckoutUIState extends State<CheckoutUI>
           (
             child: new ListView.builder
             (
-              itemBuilder: (_, int pos) => cardOggetto(carello[pos], pos),
-              itemCount: carello.length,
+              itemCount: widget.occurences.length,
+              itemBuilder: (_, int pos) => cardOggetto(pos),
             ),
           ),
           pillButton(),
         ],
+      ),
+    );
+  }
+
+  Widget cardOggetto(int pos)
+  {
+    print(pos);
+    print(widget.occurences[pos]);
+
+    return new Card
+    (
+      child: new ListTile
+      (
+        //leading: new Center(child: new Text(widget.occurences[pos].toString())),
+        title: new Text(ListaOggetti.oggetti[widget.carelloOrdinato[pos]].nome),
+        subtitle: new Text("${ListaOggetti.oggetti[widget.carelloOrdinato[pos]].prezzo.toStringAsFixed(2)} €"),
+        trailing: new IconButton
+        (
+          onPressed: ()
+          {
+            setState(()
+            {
+              widget.occurences[pos] -= 1;
+              if(widget.occurences[pos] == 0) widget.carelloOrdinato.removeAt(pos);
+            });
+            
+            if(widget.carelloOrdinato.length == 0) Navigator.pop(context);
+          },
+          icon: new Icon(Icons.delete),
+        ),
       ),
     );
   }
@@ -78,27 +133,6 @@ class CheckoutUIState extends State<CheckoutUI>
     );
   }
 
-  Widget cardOggetto(int id, int pos)
-  {
-    return new Card
-    (
-      child: new ListTile
-      (
-        title: new Text(ListaOggetti.oggetti[id].nome),
-        subtitle: new Text("${ListaOggetti.oggetti[id].prezzo.toStringAsFixed(2)} €"),
-        trailing: new IconButton
-        (
-          onPressed: ()
-          {
-            setState(() => carello.removeAt(pos));
-            if(carello.length == 0) Navigator.pop(context);
-          },
-          icon: new Icon(Icons.delete),
-        ),
-      ),
-    );
-  }
-
   void _ordina()
   {
     showDialog
@@ -115,7 +149,7 @@ class CheckoutUIState extends State<CheckoutUI>
             child: new ListTile
             (
               leading: new CircularProgressIndicator(),
-              title: new Text("Un secondo, stiamo notificando le altre persone")
+              title: new Text("Un secondo, stiamo notificando le altre persone...")
             )
           )
         ],
@@ -148,16 +182,5 @@ class CheckoutUIState extends State<CheckoutUI>
     }
     
     //analytics.logEvent(name: "nuova_richiesta");
-  }
-
-  int numOggettiUguali(int id)
-  {
-    int numOgg = 0;
-    for (var i = 0; i < carello.length; i++)
-    {
-      if(carello[i] == id) numOgg++;
-    }
-
-    return numOgg;
   }
 }
