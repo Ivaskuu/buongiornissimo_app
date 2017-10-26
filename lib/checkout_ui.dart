@@ -6,8 +6,8 @@ import 'main.dart';
 
 class CheckoutUI extends StatefulWidget
 {
-  List<int> carelloOrdinato = carello;
-  List<int> occurences = new List();
+  List<int> carelloOrdinato;
+  List<int> occurences;
 
   @override
   CheckoutUIState createState() => new CheckoutUIState();
@@ -18,6 +18,8 @@ class CheckoutUIState extends State<CheckoutUI>
   @override
   void initState()
   {
+    carelloOrdinato = carello;
+    occurences = new List();
     for (int i = 0; i < widget.carelloOrdinato.length; i++)
     {
       int count = 1;
