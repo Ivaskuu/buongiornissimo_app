@@ -26,11 +26,6 @@ class ConsegnaUIState extends State<ConsegnaUI>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>
         [
-          new Container
-          (
-            margin: new EdgeInsets.only(left: 16.0),
-            child: new Text("Lista Ordini", style: Theme.of(context).textTheme.title.copyWith(color: Colors.white))
-          ),
           new Expanded
           (
             child: new FirebaseAnimatedList
@@ -60,15 +55,15 @@ class OrdineTile extends StatefulWidget
   final Animation animation;
   OrdineTile({this.snapshot, this.animation});
 
-  final List<ListTile> oggetti = new List();
-  double costTot = 0.0;
-
   @override
   OrdineTileState createState() => new OrdineTileState();
 }
 
 class OrdineTileState extends State<OrdineTile>
 {
+  final List<ListTile> _oggetti = new List();
+  double _costTot = 0.0;
+
   @override
   initState()
   {
@@ -79,7 +74,7 @@ class OrdineTileState extends State<OrdineTile>
 
     ogg.forEach((oggName, _)
     {
-      widget.oggetti.add
+      _oggetti.add
       (
         new ListTile
         (
@@ -92,7 +87,7 @@ class OrdineTileState extends State<OrdineTile>
           title: new Text(oggName),
         )
       );
-      widget.costTot += widget.snapshot.value["oggetti"][oggName]["prezzo"];
+      _costTot += widget.snapshot.value["oggetti"][oggName]["prezzo"];
     });
   }
 
@@ -122,11 +117,11 @@ class OrdineTileState extends State<OrdineTile>
                 leading: new CircleAvatar(backgroundImage: new NetworkImage(widget.snapshot.value["foto"])),
                 title: new Text("${widget.snapshot.value["classe"]} - Aula ${widget.snapshot.value["aula"]}"),
                 subtitle: new Text(widget.snapshot.value["nome"]),
-                trailing: new Text("${widget.costTot.toStringAsFixed(2)} €"),
+                trailing: new Text("${_costTot.toStringAsFixed(2)} €"),
               ),
               new Column
               (
-                children: widget.oggetti,
+                children: _oggetti,
               )
             ],
           )
