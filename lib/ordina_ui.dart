@@ -112,7 +112,7 @@ class OrdinaUIState extends State<OrdinaUI> with SingleTickerProviderStateMixin
           onTap: () => _showOggettoDialog(context, _oggetto),
           child: new Container
           (
-            decoration: new BoxDecoration(image: new DecorationImage(image: new NetworkImage(_oggetto.image), fit: BoxFit.cover)),
+            decoration: new BoxDecoration(image: new DecorationImage(image: new AssetImage("res/food_images/" + _oggetto.image), fit: BoxFit.cover)),
           ),
         ),
       ),
@@ -139,7 +139,7 @@ class OrdinaUIState extends State<OrdinaUI> with SingleTickerProviderStateMixin
           new SizedBox.fromSize
           (
             size: new Size.fromHeight(200.0),
-            child: new Container(decoration: new BoxDecoration(image: new DecorationImage(image: new NetworkImage(_oggetto.image), fit: BoxFit.cover))),
+            child: new Container(decoration: new BoxDecoration(image: new DecorationImage(image: new AssetImage("res/food_images/" + _oggetto.image), fit: BoxFit.cover))),
           ),
           new ListTile
           (
