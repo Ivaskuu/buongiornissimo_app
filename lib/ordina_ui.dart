@@ -86,14 +86,14 @@ class OrdinaUIState extends State<OrdinaUI> with SingleTickerProviderStateMixin
   {
     return new Container
     (
-      margin: new EdgeInsets.all(5.0),
+      margin: new EdgeInsets.all(0.0),
       child: new GridView.builder
       (
         gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount
         (
           crossAxisCount: 2,
-          mainAxisSpacing: 5.0,
-          crossAxisSpacing: 5.0
+          mainAxisSpacing: 4.0,
+          crossAxisSpacing: 4.0
         ),
         itemBuilder: (_, int pos) => oggettoUI(context, oggetti[pos]),
         itemCount: oggetti.length,
