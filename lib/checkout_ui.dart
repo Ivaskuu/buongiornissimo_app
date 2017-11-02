@@ -6,42 +6,51 @@ import 'main.dart';
 
 class CheckoutUI extends StatefulWidget
 {
-  List<int> carelloOrdinato;
-  List<int> occurences;
-
   @override
-  CheckoutUIState createState() => new CheckoutUIState();
+  State createState()
+  {
+    print("create state");
+    return new CheckoutUIState();
+  }
 }
-
+//€idrien
 class CheckoutUIState extends State<CheckoutUI>
 {
+  List<PiuOggetti> _listaOggetti = new List();
+
   @override
   void initState()
   {
-    carelloOrdinato = carello;
-    occurences = new List();
-    for (int i = 0; i < widget.carelloOrdinato.length; i++)
+    print("init state");
+    super.initState();
+
+    for (var i = 0; i < carello.length; i++) // Per ogni oggetto nel carello
     {
-      int count = 1;
-      for (int j = i + 1; j < widget.carelloOrdinato.length; j++)
+      bool found = false; // Se l'oggetto carello[i] è già presente nella lista widget.listaOggetti
+
+      for (var j = 0; j < _listaOggetti.length; j++) // Per ogni PiuOggetti nella lista widget.listaOggetti
       {
-        if(widget.carelloOrdinato[i] == widget.carelloOrdinato[j])
+        if(carello[i] == _listaOggetti[j].pos) // Se l'oggetto carello[i] è presente nella lista widget.listaCarello in posizione j
         {
-          count++;
-          widget.carelloOrdinato.removeAt(j);
-          j--;
+          found = true;
+          _listaOggetti[j].count++;
+          break; // L'abbiamo trovato, non c'è più bisogno di continuare
         }
       }
 
-      widget.occurences.add(count);
+      if(!found) // Se siamo arrivati alla fine della lista widget.listaOggetti ma l'oggetto carello[i] non è presente
+      {
+        _listaOggetti.add(new PiuOggetti(carello[i], 1)); // Bisogna crearlo
+      }
     }
 
-    super.initState();
+    print(_listaOggetti.length);
   }
 
   @override
   Widget build(BuildContext context)
   {
+    print("Build : " + _listaOggetti.length.toString());
     return new Scaffold
     (
       appBar: new AppBar
@@ -57,44 +66,14 @@ class CheckoutUIState extends State<CheckoutUI>
         [
           new Expanded
           (
-            child: new ListView.builder
+            child:  new ListView.builder
             (
-              itemCount: widget.occurences.length,
-              itemBuilder: (_, int pos) => cardOggetto(pos),
-            ),
+              itemBuilder: (_, int pos) => new CardOggetto(_listaOggetti[pos], this, pos),
+              itemCount: _listaOggetti.length,
+            )
           ),
           pillButton(),
         ],
-      ),
-    );
-  }
-
-  Widget cardOggetto(int pos)
-  {
-    print(pos);
-    print(widget.occurences[pos]);
-
-    return new Card
-    (
-      child: new ListTile
-      (
-        //leading: new Center(child: new Text(widget.occurences[pos].toString())),
-        title: new Text(ListaOggetti.oggetti[widget.carelloOrdinato[pos]].nome),
-        subtitle: new Text("${ListaOggetti.oggetti[widget.carelloOrdinato[pos]].prezzo.toStringAsFixed(2)} €"),
-        trailing: new IconButton
-        (
-          onPressed: ()
-          {
-            setState(()
-            {
-              widget.occurences[pos] -= 1;
-              if(widget.occurences[pos] == 0) widget.carelloOrdinato.removeAt(pos);
-            });
-            
-            if(widget.carelloOrdinato.length == 0) Navigator.pop(context);
-          },
-          icon: new Icon(Icons.delete),
-        ),
       ),
     );
   }
@@ -137,6 +116,7 @@ class CheckoutUIState extends State<CheckoutUI>
 
   void _ordina()
   {
+    // TODO: Svuota tutto il carello
     showDialog
     (
       context: context,
@@ -170,19 +150,83 @@ class CheckoutUIState extends State<CheckoutUI>
       "id": ref.key
     });
 
-    for (var i = 0; i < carello.length; i++)
+    for (var i = 0; i < _listaOggetti.length; i++)
     {
-      ref.child("oggetti").set
+      ref.child("oggetti/${ListaOggetti.oggetti[_listaOggetti[i].pos].nome}").set
       ({
-        ListaOggetti.oggetti[carello[i]].nome:
-        {
-          "quantita": 1,
-          "prezzo": ListaOggetti.oggetti[carello[i]].prezzo,
-          "macchinetta": ListaOggetti.oggetti[carello[i]].macchinetta
-        },
+        "quantita": _listaOggetti[i].count,
+        "prezzo": ListaOggetti.oggetti[_listaOggetti[i].pos].prezzo,
+        "macchinetta": ListaOggetti.oggetti[_listaOggetti[i].pos].macchinetta
       });
     }
     
     //analytics.logEvent(name: "nuova_richiesta");
+  }
+}
+
+class PiuOggetti
+{
+  int pos; // La posizione dell'oggetto nella lista_oggetti.dart
+  int count; // Il numero di oggetti dello stesso tipo nel carello
+  PiuOggetti(this.pos, this.count);
+}
+
+
+class CardOggetto extends StatefulWidget
+{
+  PiuOggetti _oggetto;
+  CheckoutUIState _ref;
+  int _posInArray;
+  CardOggetto(this._oggetto, this._ref, this._posInArray);
+
+  @override
+  State createState() => new CardOggettoState();
+}
+
+class CardOggettoState extends State<CardOggetto>
+{
+  Widget build(BuildContext context)
+  {
+    return new Card
+    (
+      child: new ListTile
+      (
+        leading: new Center(child: new Text(widget._oggetto.count.toString())),
+        title: new Text(ListaOggetti.oggetti[widget._oggetto.pos].nome),
+        subtitle: new Text("${ListaOggetti.oggetti[widget._oggetto.pos].prezzo.toStringAsFixed(2)} €"),
+        trailing: new IconButton
+        (
+          icon: new Icon(Icons.remove_circle_outline),
+          onPressed: ()
+          {
+            setState(()
+            {
+              widget._ref._listaOggetti.elementAt(widget._posInArray).count--; // Diminuisci il count del PiuOggetti
+
+              bool giaCancellatoDalCarello = false; // Metodo pigro, perchè break; non funziona quà sotto
+              carello.removeWhere((int pos) // Rimuovi l'oggetto anche dal carello generale
+              {
+                // /!\ TODO: Questo cambia la posizione degli oggetti dell'array carello, quindi bisogna ripopolare l'array... balza non ho voglia di farlo ora //
+
+                /*if(!giaCancellatoDalCarello)
+                {
+                  carello[pos] == widget._oggetto.pos;
+                  giaCancellatoDalCarello = true;
+
+                  return true;
+                }
+                else*/ return false;
+              });
+
+              if(widget._ref._listaOggetti.elementAt(widget._posInArray).count <= 0) // Se il count è minore o uguale a 0
+              {
+                widget._ref.setState(() => widget._ref._listaOggetti.removeAt(widget._posInArray)); // Rimuovi il card dalla lista
+                if(widget._ref._listaOggetti.length <= 0) Navigator.pop(context); // Se non c'è più nessun oggetto, chiudi questo screen
+              }
+            });
+          },
+        ),
+      ),
+    );
   }
 }
