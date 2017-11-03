@@ -116,11 +116,15 @@ class OrdinaUIState extends State<OrdinaUI> with SingleTickerProviderStateMixin
           ),
         ),
       ),
-      footer: new GridTileBar
+      footer: new GestureDetector
       (
-        backgroundColor: Colors.black87,
-        title: new Text(_oggetto.nome),
-        subtitle: new Text("${_oggetto.prezzo.toStringAsFixed(2)} €"),
+        onTap: () => _showOggettoDialog(context, _oggetto),
+        child: new GridTileBar
+        (
+          backgroundColor: Colors.black87,
+          title: new Text(_oggetto.nome),
+          subtitle: new Text("${_oggetto.prezzo.toStringAsFixed(2)} €"),
+        )
       ),
     );
   }
